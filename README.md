@@ -8,14 +8,14 @@
 ## Utilisation de l'application
 
 1. Télécharger le dossier.zip 
-2. Installer l'environnement "env_reco_face.yml" avec la commande 
+2. Installer l'environnement "env_reco_face.yml" et l'activer
 ```
 conda env create -f env_reco_face.yml 
-```
-3. Activer l'environnement avec conda et se placer dans le dossier contenant les fichiers
-```
-conda activate env_reco_face 
 
+conda activate env_reco_face
+```
+3. Se placer dans le dossier contenant les fichiers
+```
 cd _chemin_
 ```
 4. Executer "Application.py" en ligne de commande
