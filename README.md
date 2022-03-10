@@ -8,8 +8,8 @@
 ## Utilisation de l'application
 
 1. Télécharger le dossier.zip 
-2. Installer l'environnement "env_reco_face.yml"
-3. Aller dans le dossier voulu
+2. Installer l'environnement "env_reco_face.yml" avec la commande conda env create -f env_reco_face.yml 
+3. Activer l'environnement avec conda activate env_reco_face et ce placer dans le dossier contenant les fichiers
 ```
 cd _chemin_
 ```
