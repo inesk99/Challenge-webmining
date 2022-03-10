@@ -9,9 +9,12 @@
 
 1. Télécharger le dossier.zip 
 2. Installer l'environnement "env_reco_face.yml"
-3. Executer "Application.py" dans le dossier
+3. Aller dans le dossier voulu
 ```
 cd _chemin_
+```
+4. Executer "Application.py" en ligne de commande
+```
 streamlit run Application.py
 ```
 
