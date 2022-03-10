@@ -1,17 +1,17 @@
 # Import required modules
 import cv2 as cv
-import math
 import time
 import argparse
 import pickle
 import face_recognition
 import numpy as np
-from keras.models import Sequential
-from keras.layers import Dense, Dropout, Flatten
-from keras.layers import Conv2D
-from tensorflow.keras.optimizers import Adam 
-from keras.layers import MaxPooling2D
-from keras.preprocessing.image import ImageDataGenerator
+#import math
+#from keras.models import Sequential
+#from keras.layers import Dense, Dropout, Flatten
+#from keras.layers import Conv2D
+#from tensorflow.keras.optimizers import Adam 
+#from keras.layers import MaxPooling2D
+#from keras.preprocessing.image import ImageDataGenerator
 import streamlit as st
 
 # import fichier py 
@@ -22,7 +22,6 @@ def getFaceBox(net, frame, conf_threshold=0.7):
     frameHeight = frameOpencvDnn.shape[0]
     frameWidth = frameOpencvDnn.shape[1]
     blob = cv.dnn.blobFromImage(frameOpencvDnn, 1.0, (300, 300), [104, 117, 123], True, False)
-
     net.setInput(blob)
     detections = net.forward()
     bboxes = []
@@ -34,10 +33,10 @@ def getFaceBox(net, frame, conf_threshold=0.7):
             x2 = int(detections[0, 0, i, 5] * frameWidth)
             y2 = int(detections[0, 0, i, 6] * frameHeight)
             bboxes.append([x1, y1, x2, y2])
-            cv.rectangle(frameOpencvDnn, (x1, y1), (x2, y2), (0, 255, 0), int(round(frameHeight/150)), 8)
+            #cv.rectangle(frameOpencvDnn, (x1, y1), (x2, y2), (0, 255, 0), int(round(frameHeight/150)), 8)
     return frameOpencvDnn, bboxes
 
-st.title('Application reconnaissance facile par Webcam')
+st.title('Reconnaissance faciale et identification sur des vidéos WEBCAM')
 
 
 FRAME_WINDOW = st.image([])
@@ -114,7 +113,7 @@ if start :
     frame_width = int(cap.get(3))
     frame_height = int(cap.get(4))
     
-    out = cv.VideoWriter('output_4.mp4', cv.VideoWriter_fourcc(*'mp4v'), 5, (frame_width,frame_height))
+    out = cv.VideoWriter('video_output.mp4', cv.VideoWriter_fourcc(*'mp4v'), 5, (frame_width,frame_height))
     
     
     while cv.waitKey(1) < 0:
@@ -140,7 +139,7 @@ if start :
         
         if not bboxes:
             print("No face Detected, Checking next frame")
-            continue
+            #continue
         
         face_names = []
         
@@ -202,9 +201,41 @@ if start :
     
     
             label = "{},{},{},{}".format(gender, age,name,pred)
-            cv.putText(frameFace, label, (bbox[0], bbox[1]-10), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2, cv.LINE_AA)
+            #cv.putText(frameFace, label, (bbox[0], bbox[1]-10), cv.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 255), 2, cv.LINE_AA)
             #cv.imshow("Age Gender Demo", frameFace)
             # cv.imwrite("age-gender-out-{}".format(args.input),frameFace)
+            
+            cv.rectangle(frameFace, (bbox[1], bbox[0]), (bbox[3], bbox[2]), (0, 0, 0), int(round(frameFace.shape[0]/150)), 8)
+
+            cv.rectangle(frameFace, (bbox[1], bbox[0] - 35), (bbox[1], bbox[2]), (255, 255, 255), cv.FILLED)
+            
+            font = cv.FONT_HERSHEY_DUPLEX
+
+            k = 0
+            
+            print(label)
+            
+            for i, line in enumerate(label.split(',')):
+                k = k+25
+                
+                try:
+                    if line in ["Angry", "Disgust","Fear", "Happy","Neutral", "Sad","Surprise"]:
+                        cv.putText(frameFace, line, (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (0, 255, 255), 1)
+                    elif line.startswith("("):
+                        cv.putText(frameFace, line+" "+str(round(max(agePreds[0].tolist())*100,2)), (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (255, 255, 0), 1)
+                    elif line == "Male":
+                        cv.putText(frameFace, line+" "+str(round(max(genderPreds[genderPreds[0].argmax()].tolist())*100,2)), (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (255, 0, 0), 1)
+                    elif line == "Female":
+                        #cv.putText(frameFace, line+" "+str(round(max(genderPreds[genderPreds[1].argmax()].tolist())*100,2)), (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (0, 0, 255), 1)
+                        cv.putText(frameFace, line, (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (0, 0, 255), 1)
+                    else:
+                        cv.putText(frameFace, line, (bbox[1] + 6,  bbox[0] - 6 + k), font, 1.0, (255, 0, 255), 1)
+                except:
+                    pass
+                
+            
+            
+            #cv.imshow("Age Gender Demo", cv.resize(frameFace,(1920,1080)))
         print("time : {:.3f}".format(time.time() - t))
         
         frame_ok = cv.cvtColor(frameFace, cv.COLOR_RGB2BGR)
