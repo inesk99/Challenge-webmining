@@ -1,7 +1,7 @@
 # Reconnaissance faciale et identification sur des vidéos WEBCAM - Master SISE // Challenge sur 2 jours
 
-* IMBAUD Olivier
 * KARA Ines
+* IMBAUD Olivier
 * PERENON Clement
 * FRINTZ Elisa
 
