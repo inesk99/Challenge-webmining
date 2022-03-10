@@ -12,7 +12,7 @@
 ```
 conda env create -f env_reco_face.yml 
 ```
-4. Activer l'environnement avec conda et se placer dans le dossier contenant les fichiers
+3. Activer l'environnement avec conda et se placer dans le dossier contenant les fichiers
 ```
 conda activate env_reco_face 
 
