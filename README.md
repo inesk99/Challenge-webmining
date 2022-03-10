@@ -18,7 +18,7 @@ conda activate env_reco_face
 ```
 cd _chemin_
 ```
-4. Executer "Application.py" en ligne de commande
+4. Executer  "Application.py" en ligne de commande
 ```
 streamlit run Application.py
 ```
