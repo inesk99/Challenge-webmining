@@ -8,7 +8,7 @@
 ## Utilisation de l'application
 
 1. Télécharger le dossier.zip 
-2. Installer l'environnement "Env_.yaml"
+2. Installer l'environnement "env_reco_face.yml"
 3. Executer "Application.py" dans le dossier
 ```
 cd _chemin_
