@@ -6,6 +6,7 @@ import face_recognition
 import numpy as np
 import streamlit as st
 from model import ERModel
+import pandas as pd
 
 # Fonction : Récupérer les coordonnées des visages
 def getFaceBox(net, frame, conf_threshold=0.7):
@@ -91,6 +92,7 @@ if start :
     frame_height = int(cap.get(4))
     
     out = cv.VideoWriter('video_output.mp4', cv.VideoWriter_fourcc(*'mp4v'), 5, (frame_width,frame_height))
+    face_names = []
     
     while cv.waitKey(1) < 0:
         hasFrame, frame = cap.read()
@@ -109,7 +111,7 @@ if start :
         #if not bboxes:
         #    print("No face Detected, Checking next frame")
         
-        face_names = []
+        
         
         for bbox in faces:
             face=frame[max(bbox[0]-padding,0):min(bbox[2]+padding,frame.shape[0]),max(0,bbox[3]-padding):min(bbox[1]+padding,frame.shape[1])]
@@ -129,8 +131,10 @@ if start :
     
             if matches[best_match_index]:
                 name = faces_names[best_match_index]
-    
-            face_names.append(name)
+            
+            if name not in face_names : 
+                face_names.append(name)
+                print(face_names)
             
             #print("Reconnaissance des vissage:  {}".format(face_names))
             
@@ -188,10 +192,18 @@ if start :
         FRAME_WINDOW.image(frame_ok)
         
         out.write(cv.cvtColor(frame_ok, cv.COLOR_RGB2BGR))
-    
+        
+        with open('noms_output.txt', 'w') as f:
+            f.writelines('\n'.join(face_names))           
+
+        
+        
         if stop :
+            
+                
             break 
             cap.release()
             out.release()
+            
 
 cv.destroyAllWindows()
