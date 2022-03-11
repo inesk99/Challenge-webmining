@@ -8,7 +8,7 @@
 ## Utilisation de l'application
 
 1. Télécharger le dossier.zip 
-2. Installer l'environnement "env_reco_face.yml" et l'activer
+2. Installer l'environnement conda "env_reco_face.yml" et l'activer
 ```
 conda env create -f env_reco_face.yml 
 
